@@ -28,19 +28,21 @@ c, addr = sock.accept()
 print 'Got connection from', addr
 while True:
 	#printout = game.printer
-	choice = c.recv(1024)
-	if choice == "Print":
+	signal = c.recv(1024)
+	print "got choice"
+	print signal[0]
+	if signal[0] == "P":
 		c.send(game.printer())
-	elif choice == "Update":
+	elif signal[0] == "U":
 		print "got update"
-		u = c.recv(1024)
-		print u
-		letter = u[0]
-		x = int(u[1])
-		y = int(u[2])
+		#u = c.recv(1024)
+		print signal[1:]
+		letter = signal[1]
+		x = int(signal[2])
+		y = int(signal[3])
 		if x > -1 and x < 3 and y > -1 and y < 3 and game.board[x][y] == ".":
 			game.update(letter, x, y)
-			c.send(letter + " was placed at " + u[1] + "," + u[2])
+			c.send(letter + " was placed at " + signal[2] + "," + signal[2])
 		else:
 			c.send("Invalid move!")
 	

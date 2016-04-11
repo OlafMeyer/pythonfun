@@ -66,31 +66,49 @@ while True:
 
 			if ms[0]>0 and ms[0]<100 and ms[1]>0 and ms[1]<100:
 				drawpos = (18,18)
-				conn.send(letter + '0' + '0')
+				xpos = '0'
+				ypos = '0'
+				#conn.send(letter + '0' + '0')
 			elif ms[0]>100 and ms[0]<200 and ms[1]>0 and ms[1]<100:
 				drawpos = (118,18)
-				conn.send(letter + '1' + '0')
+				xpos = '1'
+				ypos = '0'
+				#conn.send(letter + '1' + '0')
 			elif ms[0]>200 and ms[0]<300 and ms[1]>0 and ms[1]<100:
 				drawpos = (218,18)
-				conn.send(letter + '2' + '0')
+				xpos = '2'
+				ypos = '0'
+				#conn.send(letter + '2' + '0')
 			elif ms[0]>0 and ms[0]<100 and ms[1]>100 and ms[1]<200:
 				drawpos = (18,118)
-				conn.send(letter + '0' + '1')
+				xpos = '0'
+				ypos = '1'
+				#conn.send(letter + '0' + '1')
 			elif ms[0]>100 and ms[0]<200 and ms[1]>100 and ms[1]<200:
 				drawpos = (118,118)
-				conn.send(letter + '1' + '1')
+				xpos = '1'
+				ypos = '1'
+				#conn.send(letter + '1' + '1')
 			elif ms[0]>200 and ms[0]<300 and ms[1]>100 and ms[1]<200:
 				drawpos = (218,118)
-				conn.send(letter + '2' + '1')
+				xpos = '2'
+				ypos = '1'
+				#conn.send(letter + '2' + '1')
 			elif ms[0]>0 and ms[0]<100 and ms[1]>200 and ms[1]<300:
 				drawpos = (18,218)
-				conn.send(letter + '0' + '2')
+				xpos = '0'
+				ypos = '2'
+				#conn.send(letter + '0' + '2')
 			elif ms[0]>100 and ms[0]<200 and ms[1]>200 and ms[1]<300:
 				drawpos = (118,218)
-				conn.send(letter + '1' + '2')
+				xpos = '1'
+				ypos = '2'
+				#conn.send(letter + '1' + '2')
 			elif ms[0]>200 and ms[0]<300 and ms[1]>200 and ms[1]<300:
 				drawpos = (218,218)
-				conn.send(letter + '2' + '2')
+				xpos = '2'
+				ypos = '2'
+				#conn.send(letter + '2' + '2')
 			else:
 				willDraw = False
 				print "not drawing or sending data"
@@ -99,18 +117,20 @@ while True:
 				#willDraw = False
 
 			if willDraw:
-				conn.send("Update")
+				conn.send("U" + letter + xpos + ypos)
 				if turnX:
 					drawX(drawpos)
-					turnX = not turnX
 				else:
 					drawO(drawpos)
-					turnX = not turnX
+				turnX = not turnX
 
 		if event.type == KEYDOWN:
 			print event.key
 			if event.key == ord('r'):
 				windowSurface.fill(BKGD)
 				drawBoard()
+			elif event.key == ord('p'):
+				conn.send("P")
+				print conn.recv(1024)
 
 	pygame.display.update()
