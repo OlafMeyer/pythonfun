@@ -57,6 +57,7 @@ while True:
 		if event.type == MOUSEBUTTONDOWN:
 			#conn.send("Update")
 			ms = event.pos
+			boardClick = True
 			willDraw = True
 			
 			if turnX:
@@ -110,27 +111,33 @@ while True:
 				ypos = '2'
 				#conn.send(letter + '2' + '2')
 			else:
-				willDraw = False
+				boardClick = False
 				print "not drawing or sending data"
 
 			#if conn.recv(1024) == INVALID:
 				#willDraw = False
 
-			if willDraw:
+			if boardClick:
 				conn.send("U" + letter + xpos + ypos)
-				if turnX:
-					drawX(drawpos)
-				else:
-					drawO(drawpos)
-				turnX = not turnX
+				boardmsg = conn.recv(1024) #info from server about update
+				print boardmsg
+				if boardmsg == "Invalid move!":
+					willDraw = False
+				if willDraw:
+					if turnX:
+						drawX(drawpos)
+					else:
+						drawO(drawpos)
+					turnX = not turnX
 
 		if event.type == KEYDOWN:
 			print event.key
 			if event.key == ord('r'):
+				conn.send("R")
 				windowSurface.fill(BKGD)
 				drawBoard()
 			elif event.key == ord('p'):
 				conn.send("P")
-				print conn.recv(1024)
+				print conn.recv(1024) #text version of board
 
 	pygame.display.update()
