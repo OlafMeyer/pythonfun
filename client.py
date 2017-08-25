@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import socket
-from Tkinter import *
+#from Tkinter import *
 
 class player:
 	def __init__(self, n):
